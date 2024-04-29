@@ -60,7 +60,9 @@ void showSet(int matrix[][N], int qtdConjuntos) {
 	printf("[ ");
 
 	for (int m = 0; m < N; m++) {
-		printf(" %i ", matrix[index][m]);
+		if (matrix[index][m] != 0 ) {
+			printf(" %i ", matrix[index][m]);
+		}
 	}
 	printf(" ]\n");
 }
@@ -215,11 +217,13 @@ void insertSet(int matrix[][N], int qtdConjuntos) {
 
 
 	for (int i = 0; i < N; i++) {
-		printf("\nValor %i: ", i);
+		if (matrix[indice][i] == 0) {
+			printf("\nValor %i: ", i);
 
-		scanf("%i", &valor);
+			scanf("%i", &valor);
 
-		matrix[indice][i] = valor;
+			matrix[indice][i] = valor;
+		}
 	}
 
 	showMatrix(matrix, qtdConjuntos);
