@@ -66,7 +66,7 @@ void showSet(int matrix[][N], int qtdConjuntos) {
 }
 
 void showMenu(int matrix[][N], int qtdConjuntos) {
-	int option = 0;
+	int option = 0, item = 0;
 	
 	do {
 		printf("1 - Inserir um novo conjunto vazio\n");
@@ -112,11 +112,33 @@ void showMenu(int matrix[][N], int qtdConjuntos) {
 				break;
 			case 8:
 				system("cls");
-				int result = searchValue(-2, matrix, 0, N - 1, -2, qtdConjuntos);
-				if (result != -1) {
-					printf("O vetor possui o numero na coluna %i\n!", result);
-				} else {
-					printf("O vetor não possui o numero na coluna %i\n!", result);
+				do {
+					system("cls");	
+					printf("Deseja pesquisar qual item? ");
+					scanf("%i", &item);
+				} while( item <= -1);
+
+				for(int a = 0; a < qtdConjuntos; a++) {
+
+					for (int j = 0; j <= N; j++)
+					{
+						int minIndex = j;
+						for (int k = j + 1; k <= N; k++)
+						{
+							if (matrix[a][k] < matrix[a][minIndex])
+							{
+								minIndex = k;
+							}
+						}
+						int temp = matrix[a][j];
+						matrix[a][j] = matrix[a][minIndex];
+						matrix[a][minIndex] = temp;
+					}
+
+					int result = searchValue(item, matrix, 0, N - 1, a, qtdConjuntos);
+					if (result != -1) {
+						printf("A linha %i possui o numero na coluna %i!\n", a + 1 , result);
+					}
 				}
 				break;
 			case 9:
@@ -336,44 +358,12 @@ int searchValue(int item, int matrix[][N], int begin, int end, int row, int qtdC
 {
 	int i = (begin + end) / 2;
 
-	if (row == -2) {
-		do {
-			system("cls");	
-			showMatrix(matrix, qtdConjuntos);
-			printf("Deseja pesquisar em qual linha? ");
-			scanf("%i", &row);
-		} while( row < -1 || row >= qtdConjuntos);
-	}
-
-	if (item == -2) {
-		do {
-			system("cls");	
-			printf("Deseja pesquisar qual item? ");
-			scanf("%i", &item);
-		} while( item <= -1);
-	}
-
 	if (begin > end) { 
 		return -1;
 	}
 
-	for (int j = begin; j <= end; j++)
-    {
-        int minIndex = j;
-        for (int k = j + 1; k <= end; k++)
-        {
-            if (matrix[row][k] < matrix[row][minIndex])
-            {
-                minIndex = k;
-            }
-        }
-        int temp = matrix[row][j];
-        matrix[row][j] = matrix[row][minIndex];
-        matrix[row][minIndex] = temp;
-    }
-
 	if (matrix[row][i] == item) { 
-		return i + 1;
+		return i;
 	}
 
 	if (matrix[row][i] < item) { 
